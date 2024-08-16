@@ -1,0 +1,22 @@
+# Node modules
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Environment files
+.env
+
+# Angular specific
+/frontend/.angular/
+frontend/.angular/
+frontend/src/environments/environment.*.ts
+
+# NestJS specific
+/backend/dist/
