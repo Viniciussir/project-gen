@@ -9,4 +9,13 @@ import { Component } from '@angular/core';
 })
 export class TableComponent {
 
+  usuario_id:string = '';
+  nome:string = '';
+  valor:number = 0;
+  quantidade:number = 0;
+  descricao:string = '';
+  categoria:string = '';
+  caracteristicas:string = '';
+  imagens:string = '';
+
 }

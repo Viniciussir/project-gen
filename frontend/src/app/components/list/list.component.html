@@ -1,0 +1,13 @@
+<section class="list-container">
+    <div *ngFor="let value of options" class="list-item">
+        <img 
+            [src]="value.img" 
+            [alt]="value.name"
+            title="CLique para ver detalhes">
+        <button 
+            [ngClass]="{ 'favorited': value.isFavorited }" 
+            [title]="value.isFavorited ? 'Remova dos Favoritos' : 'Clique para adicionar aos Favoritos'">
+        </button>
+        <span>{{ value.name }}</span>
+    </div>
+</section>
