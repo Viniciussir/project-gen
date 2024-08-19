@@ -17,10 +17,12 @@ export class ListComponent {
 
   @Output() clickCheckedAction = new EventEmitter<void>();
   @Output() clicknNewProductAction = new EventEmitter<void>();
+  @Output() clickImgAction = new EventEmitter<void>();
 
   constructor() { }
 
   clickImg(value:any): void {
+    this.clickImgAction.emit(value);
   }
 
   clickButton(value: any) {

@@ -1,19 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ContainerComponent } from '../../components/container/container.component';
 import { InputTextComponent } from '../../components/input-text/input-text.component';
 import { InputNumberComponent } from "../../components/input-number/input-number.component";
 import { TitleComponent } from '../../components/title/title.component';
 import { ButtonComponent } from '../../components/button/button.component';
 import { ApiService } from '../../service/api.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ImageUploadComponent } from '../../components/image-upload/image-upload.component';
 import { firstValueFrom } from 'rxjs';
 import { MessageComponent } from '../../components/message/message.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-product-add',
+  selector: 'app-product-item',
   standalone: true,
   imports: [
     CommonModule,
@@ -26,10 +27,10 @@ import { FooterComponent } from '../../components/footer/footer.component';
     MessageComponent,
     FooterComponent
 ],
-  templateUrl: './product-add.component.html',
-  styleUrl: './product-add.component.scss'
+  templateUrl: './product-item.component.html',
+  styleUrl: './product-item.component.scss'
 })
-export class ProductAddComponent {
+export class ProductItemComponent implements OnInit {
 
   titleProductAdd:string = 'Adicione as informações do seu produto'
 
@@ -59,7 +60,24 @@ export class ProductAddComponent {
   constructor(
     private apiService:ApiService,
     private router: Router,
-  ){}
+    private route: ActivatedRoute,
+    private location: Location
+  ){
+  }
+
+  ngOnInit(): void {
+    const currentUrl = this.location.path();
+    if (currentUrl.includes('detalhar')) {
+    } else if (currentUrl.includes('alterar')){
+      
+    } else {
+
+    }
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+    });
+    
+  }
 
   onImageSelected(file: File): void {
     this.selectedImageFile = file;
@@ -90,7 +108,7 @@ export class ProductAddComponent {
   }
 
   return(){
-    this.router.navigate(['/list-product'])
+    this.router.navigate(['/lista-produtos'])
   }
 
 }

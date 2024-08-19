@@ -1,19 +1,27 @@
 import { Routes } from '@angular/router';
 import { ProductListComponent } from './pages/product-list/product-list.component';
-import { ProductAddComponent } from './pages/product-add/product-add.component';
+import {  ProductItemComponent } from './pages/product-item/product-item.component';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'list-product',
+        redirectTo: 'lista-produtos',
         pathMatch: 'full'
     },
     {
-        path: 'list-product',
+        path: 'lista-produtos',
         component: ProductListComponent
     },
     {
-        path: 'add-new-product',
-        component: ProductAddComponent
+        path: 'novo-produto',
+        component: ProductItemComponent
+    },
+    {
+        path: 'alterar-produto/:id',
+        component: ProductItemComponent
+    },
+    {
+        path: 'detalhar-produto/:id',
+        component: ProductItemComponent
     }
 ];

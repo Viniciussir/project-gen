@@ -6,8 +6,10 @@
 .list-item {
     box-sizing: border-box;
     width: 15vw;
-    height: 12vw;
+    height: 20vw;
     margin: 1%;
+    background-color: #f7f7f7;
+    border-radius: 10px;
 }
 
 .item {
@@ -25,6 +27,9 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     border-radius: 10px;
+    width: 14vw;
+    height: 11vw;
+    margin-top: 5px;
 }
 
 .item-img img:hover {
@@ -32,10 +37,6 @@
     transform: scale(1.05);
     cursor: pointer;
 }
-
-// .item-img:hover button {
-//     background-color: #bab6b6;
-// }
 
 .button-edit {
     width: 30px;
@@ -55,14 +56,6 @@
     background-color: #ffffff;
     cursor: pointer;
 }
-
-// .favorited {
-//     background-image: url('../../../../public/img/icon-favorite.png');
-// }
- 
-// .not-favorited {
-//     background-image: url('../../../../public/img/icon-not-favorite.png');
-// }
 
 .button-delete {
     width: 30px;
@@ -85,12 +78,42 @@
 
 .item-name {
     text-transform: capitalize;
+    font-size: 30px;
+    padding: 5px;
+}
+
+.item-description {
+    text-transform: capitalize;
+    font-size: 18px;
+    color: gray;
+    padding: 5px;
+}
+
+.item-quantity {
+    text-transform: capitalize;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.item-price {
+    text-transform: capitalize;
     font-size: 25px;
     padding: 5px;
 }
 
 .item-icon-add{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 15vw;
+    background-color: #f7f7f7;
     margin: 1%;
+
+    span {
+        margin: 3%;
+        font-size: 25px;
+    }
+
 }
  
 .icon-add {
@@ -101,7 +124,7 @@
     background-repeat: no-repeat; 
     background-position: center;
     background-size: contain; 
-    background-color: #F8F9FA;
+    background-color: #f7f7f7;
     border: none;
 
     &:hover {

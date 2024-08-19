@@ -6,9 +6,8 @@
                     (click)="clickImg(value)" 
                     [src]="value.img" 
                     [alt]="value.name"
-                    title="Click to access Details">
+                    title="Clique para ver os detalhes">
                 <button 
-                    [ngClass]="{ 'favorited': value.isFavorited }"
                     class="button-edit" 
                     (click)="clickButton(value)" 
                     [title]="'Clique para editar'">
@@ -21,14 +20,15 @@
             </div>
             <span class="item-name">{{ value.name }}</span>
             <span class="item-description">{{ value.description }}</span>
-            <span class="item-description">{{ value.quantity }}</span>
-            <span class="item-description">{{ value.price }}</span>
+            <span class="item-quantity">{{ value.quantity + ' Unidades Restantes'}}</span>
+            <span class="item-price">{{ 'R$ ' + value.price}}</span>
         </div>
     </div>
 
     <div class="item-icon-add">
         <button class="icon-add" (click)="clickNewProduct()">
         </button>
+        <span>Adicionar Produtos</span>
     </div>
  
 </div>

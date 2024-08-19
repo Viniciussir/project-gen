@@ -13,5 +13,5 @@ import { ProductListComponent } from './pages/product-list/product-list.componen
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'frontend';
+  title = 'Projeto Gen';
 }

@@ -53,8 +53,16 @@ export class ProductListComponent implements OnInit{
 
   }
 
-  clicknNewProduct(){
-    this.router.navigate(['/add-new-product'])
+  clickNewProduct(){
+    this.router.navigate(['/novo-produto'])
+  }
+
+  clickDetailProduct(value:any){
+    this.router.navigate(['/detalhar-produto', value.name]);
+  }
+
+  clickAlterProduct(value:any){
+    this.router.navigate(['/alterar-produto', value.name]);
   }
   
 
