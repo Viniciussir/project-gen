@@ -23,17 +23,14 @@ export class ProductDTO {
 
     @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
     @Min(1, { message: 'O valor precisa ser maior que zero' })
-    value: number;
+    price: number;
 
     @IsNumber()
     @Min(0, { message: 'Quantidade mínima inválida' })
-    amount: number;
+    quantity: number;
 
     @ValidateNested()
     @IsArray()
     @ArrayMinSize(1)
     img: string[];
-
-    @IsString()
-    isFavorited: string;
 }

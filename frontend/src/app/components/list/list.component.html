@@ -9,9 +9,9 @@
                     title="Click to access Details">
                 <button 
                     [ngClass]="{ 'favorited': value.isFavorited }"
-                    class="button-favorited" 
+                    class="button-edit" 
                     (click)="clickButton(value)" 
-                    [title]="value.isFavorited ? 'Remova dos favoritos' : 'Adicione aos favoritos'">
+                    [title]="'Clique para editar'">
                 </button>
                 <button 
                     class="button-delete"
@@ -20,6 +20,9 @@
                 </button>
             </div>
             <span class="item-name">{{ value.name }}</span>
+            <span class="item-description">{{ value.description }}</span>
+            <span class="item-description">{{ value.quantity }}</span>
+            <span class="item-description">{{ value.price }}</span>
         </div>
     </div>
 

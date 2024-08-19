@@ -1,19 +1,59 @@
 <app-container>
 
+    <app-title
+        [value]="titleProductAdd">
+    </app-title>
 
-    <app-input-text
-        [placeholder]="placeholderName" 
-        [(value)]="valueName">>
-    </app-input-text>
+    <div class="accordion-itens">
 
-    <app-input-number
-        [placeholder]="placeholderValue" 
-        [(value)]="valueValue">
-    </app-input-number>
+        <div class="itens-img">
+            <app-image-upload
+            (imageSelected)="onImageSelected($event)"></app-image-upload>
+        </div>
 
-    <button
-    (click)="Salvar($event)">
+        <div class="itens-info">
 
-    </button>
+            <app-input-text
+            class="itens"
+            [placeholder]="placeholderName" 
+            [(value)]="valueName">>
+        </app-input-text>
 
+        <app-input-text
+            class="itens"
+            [placeholder]="placeholderDescription" 
+            [(value)]="valueDescription">>
+        </app-input-text>
+
+        <app-input-number
+            class="itens"
+            [placeholder]="placeholderQuantity" 
+            [(value)]="valueQuantity">
+        </app-input-number>
+
+        <app-input-number
+            class="itens"
+            [placeholder]="placeholderPrice" 
+            [(value)]="valuePrice">
+        </app-input-number>
+
+        </div>
+
+    </div>
+
+    <div class="button-container">
+
+        <app-button 
+            [indDisabled]="false"
+            [name]="'Voltar'"
+            (action)="return()">
+        </app-button>
+
+        <app-button 
+          [indDisabled]="false"
+          [name]="'Salvar'"
+          (action)="return()">
+        </app-button>
+
+      </div>
 </app-container>

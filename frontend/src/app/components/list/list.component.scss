@@ -37,7 +37,7 @@
 //     background-color: #bab6b6;
 // }
 
-.button-favorited {
+.button-edit {
     width: 30px;
     height: 30px;
     background-color: #ffffff;
@@ -47,15 +47,10 @@
     top: 5px;
     left: 5px;
     outline: none;
-
-    background-image: url('../../../../public/img/icon-favorite.png');
-  
-    &.favorited {
-      background-image: url('../../../../public/img/icon-not-favorite.png');
-    }
+    background-image: url('../../../../public/img/icon-edit.png');
 }
 
-.button-favorited:hover {
+.button-edit:hover {
     transform: scale(1.2);
     background-color: #ffffff;
     cursor: pointer;
