@@ -1,0 +1,11 @@
+<div class="text-input-container">
+    <input
+      type="text"
+      pattern="[a-zA-Z]*"
+      (keypress)="allowTextOnly($event)"
+      (input)="onValueChange($event)"
+      [(ngModel)]="value"
+      [placeholder]="placeholder"
+    />
+</div>
+  

@@ -1,1 +1,19 @@
-<p>product-add works!</p>
+<app-container>
+
+
+    <app-input-text
+        [placeholder]="placeholderName" 
+        [(value)]="valueName">>
+    </app-input-text>
+
+    <app-input-number
+        [placeholder]="placeholderValue" 
+        [(value)]="valueValue">
+    </app-input-number>
+
+    <button
+    (click)="Salvar($event)">
+
+    </button>
+
+</app-container>

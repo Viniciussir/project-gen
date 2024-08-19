@@ -15,9 +15,8 @@ export class ListComponent {
   @Input() value: any = {};
   @Input() options: any[] = [];
 
-  @Output() clickImgAction:any;
-  @Output() clickButtonAction:any;
   @Output() clickCheckedAction = new EventEmitter<void>();
+  @Output() clicknNewProductAction = new EventEmitter<void>();
 
   constructor() { }
 
@@ -32,10 +31,8 @@ export class ListComponent {
     this.clickCheckedAction.emit(value);
   }
 
-  addNewProduct() {
-    // Lógica para adicionar um novo produto
-    console.log('Adicionar novo produto');
-    // Você pode redirecionar para uma página de criação, abrir um modal, etc.
+  clickNewProduct() {
+    this.clicknNewProductAction.emit();
   }
 
 }

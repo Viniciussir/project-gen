@@ -4,6 +4,7 @@ import { ListComponent } from '../../components/list/list.component';
 import { ApiService } from '../../service/api.service';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -22,7 +23,8 @@ export class ProductListComponent implements OnInit{
   value:any = {};
 
   constructor(
-    private apiService:ApiService
+    private apiService:ApiService,
+    private router: Router,
   ){}
 
   ngOnInit() {
@@ -40,12 +42,17 @@ export class ProductListComponent implements OnInit{
       }
     }
     catch(error){
-      console.error('Erro ao carregar imagem do Pokémon:', error);
+      console.error('Erro', error);
     }
   }
 
   checkedDelete(value:any){
 
   }
+
+  clicknNewProduct(){
+    this.router.navigate(['/add-new-product'])
+  }
+  
 
 }
