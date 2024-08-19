@@ -1,13 +1,31 @@
 <section class="list-container">
     <div *ngFor="let value of options" class="list-item">
-        <img 
-            [src]="value.img" 
-            [alt]="value.name"
-            title="CLique para ver detalhes">
-        <button 
-            [ngClass]="{ 'favorited': value.isFavorited }" 
-            [title]="value.isFavorited ? 'Remova dos Favoritos' : 'Clique para adicionar aos Favoritos'">
-        </button>
-        <span>{{ value.name }}</span>
+        <div class="item">
+            <div class="item-img">
+                <img 
+                    (click)="clickImg(value)" 
+                    [src]="value.img" 
+                    [alt]="value.name"
+                    title="Click to access Details">
+                <button 
+                    [ngClass]="{ 'favorited': value.isFavorited }"
+                    class="button-favorited" 
+                    (click)="clickButton(value)" 
+                    [title]="value.isFavorited ? 'Remova dos favoritos' : 'Adicione aos favoritos'">
+                </button>
+                <button 
+                    class="button-delete"
+                    (click)="clickButtonDelete(value)" 
+                    [title]="'Excluir produto'">
+                </button>
+            </div>
+            <span class="item-name">{{ value.name }}</span>
+        </div>
     </div>
+
+    <div class="item-icon-add">
+        <button class="icon-add" (click)="addNewProduct()">
+        </button>
+    </div>
+ 
 </section>

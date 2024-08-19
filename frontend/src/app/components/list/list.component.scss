@@ -1,20 +1,116 @@
 .list-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    margin: 0 10%;
 }
 
 .list-item {
-    flex: 0 0 18%;
-    max-width: 18%;
     box-sizing: border-box;
+    width: 15vw;
+    height: 12vw;
     margin: 1%;
 }
-button.favorited {
-    background-image: url('../../../assets/img/star-pokemon.png');
+
+.item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
-button:not(.favorited) {
-    background-image: url('../../../assets/img/star-pokemon-branca.png');
+.item-img {
+    position: relative;
+    display: inline-block;
+}
+
+.item-img img {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.item-img img:hover {
+    background-color: #bab6b6;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+// .item-img:hover button {
+//     background-color: #bab6b6;
+// }
+
+.button-favorited {
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff;
+    background-size: cover;
+    border: none;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    outline: none;
+
+    background-image: url('../../../../public/img/icon-favorite.png');
+  
+    &.favorited {
+      background-image: url('../../../../public/img/icon-not-favorite.png');
+    }
+}
+
+.button-favorited:hover {
+    transform: scale(1.2);
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+// .favorited {
+//     background-image: url('../../../../public/img/icon-favorite.png');
+// }
+ 
+// .not-favorited {
+//     background-image: url('../../../../public/img/icon-not-favorite.png');
+// }
+
+.button-delete {
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff;
+    background-size: cover;
+    border: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    outline: none;
+    background-image: url('../../../../public/img/icon-delete.png');
+}
+
+.button-delete:hover {
+    transform: scale(1.2);
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.item-name {
+    text-transform: capitalize;
+    font-size: 25px;
+    padding: 5px;
+}
+
+.item-icon-add{
+    margin: 1%;
+}
+ 
+.icon-add {
+    width: 15vw; 
+    height: 11vw; 
+    margin: 1%;
+    background-image: url('../../../../public/img/icon-add.png');
+    background-repeat: no-repeat; 
+    background-position: center;
+    background-size: contain; 
+    background-color: #F8F9FA;
+    border: none;
+
+    &:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
 }

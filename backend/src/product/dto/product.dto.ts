@@ -14,13 +14,11 @@ import {
 export class ProductDTO {
     @IsString()
     @IsNotEmpty({ message: 'Nome do produto não pode ser vazio' })
-    nome: string;
+    name: string;
 
     @IsString()
     @IsNotEmpty({ message: 'Descrição do produto não pode ser vazia ' })
-    @MaxLength(1000, {
-        message: 'Descrição não pode ter mais que 1000 caracteres',
-    })
+    @MaxLength(1000, {message: 'Descrição não pode ter mais que 1000 caracteres'})
     descricao: string;
 
     @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
@@ -39,9 +37,12 @@ export class ProductDTO {
     @ValidateNested()
     @IsArray()
     @ArrayMinSize(1)
-    imagens: string[];
+    img: string[];
 
     @IsString()
     @IsNotEmpty({ message: 'Categoria do produto não pode ser vazia' })
     categoria: string;
+
+    @IsString()
+    isFavorited: string;
 }
