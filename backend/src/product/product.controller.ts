@@ -49,5 +49,14 @@ export class ProductController {
         }
     }
 
+    @Delete('/:id')
+    async removeUsuario(@Param('id') id: string) {
+        const usuarioRemovido = await this.productRepository.remove(id);
+    
+        return {
+            mensagem: 'Usuário removido com sucesso'
+        }
+    }
+
 
 }

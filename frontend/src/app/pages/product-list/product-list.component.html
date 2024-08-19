@@ -3,7 +3,7 @@
     <app-list
         [options]="options"
         [value]="value"
-        (clickButtonDelete)="checkedDelete($event)"
+        (clickDeleteAction)="checkedDelete($event)"
         (clicknNewProductAction)="clickNewProduct()"
         (clickImgAction)="clickDetailProduct($event)"
         (clickAlterAction)="clickAlterProduct($event)">
@@ -12,3 +12,5 @@
 </app-container>
 
 <app-footer></app-footer>
+
+<app-message *ngIf="indShowMessage" [message]="message"></app-message>

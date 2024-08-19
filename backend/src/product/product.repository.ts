@@ -39,4 +39,13 @@ export class ProductRepository {
     return usuario;
   }
 
+  async remove(id: string){
+    const product = this.searchById(id);
+    this.product = this.product.filter(
+        usuarioSalvo => usuarioSalvo.id !== id
+    );
+
+    return product;
+}
+
 }

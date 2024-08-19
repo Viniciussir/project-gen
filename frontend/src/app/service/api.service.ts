@@ -18,7 +18,7 @@ export class ApiService {
   }
 
   searchProductById(id:string):Observable<any> {
-    return this.http.get<any>('http://localhost:3000/product/' + id);
+    return this.http.get<any>(this.url+ '/' + id);
   }
 
   newProduct(value: any): Observable<any> {
@@ -27,6 +27,10 @@ export class ApiService {
 
   editProduct(id:string, value:any): Observable<any> {
     return this.http.put(this.url+ '/' + id, value);
+  }
+
+  deleteProduct(id:string): Observable<any> {
+    return this.http.delete(this.url+ '/' + id);
   }
 
 

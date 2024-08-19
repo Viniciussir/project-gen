@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FooterComponent } from "../../components/footer/footer.component";
+import { MessageComponent } from '../../components/message/message.component';
 
 @Component({
   selector: 'app-product-list',
@@ -15,7 +16,8 @@ import { FooterComponent } from "../../components/footer/footer.component";
     ContainerComponent,
     ListComponent,
     FooterComponent,
-    FooterComponent
+    FooterComponent,
+    MessageComponent
 ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
@@ -24,6 +26,9 @@ export class ProductListComponent implements OnInit{
 
   options:any[] = [];
   value:any = {};
+
+  indShowMessage:boolean = false;
+  message:string = '';
 
   constructor(
     private apiService:ApiService,
@@ -49,10 +54,6 @@ export class ProductListComponent implements OnInit{
     }
   }
 
-  checkedDelete(value:any){
-
-  }
-
   clickNewProduct(){
     this.router.navigate(['/novo-produto'])
   }
@@ -63,6 +64,22 @@ export class ProductListComponent implements OnInit{
 
   clickAlterProduct(value:any){
     this.router.navigate(['/alterar-produto', value.id]);
+  }
+
+  checkedDelete(value:any){
+    this.apiService.deleteProduct(value.id).subscribe({
+      error: (error) => {
+        console.error('Erro ao enviar dados:', error);
+      },
+      complete: () => {
+        this.message = "Excluido com Sucesso!";
+        this.indShowMessage = true;
+        this.loadListProduct();
+        setTimeout(() => {
+          this.indShowMessage = false;
+        }, 2000);
+      }
+    });
   }
   
 
