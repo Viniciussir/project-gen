@@ -1,0 +1,15 @@
+.message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  background-color: #6f64ff;
+  color: #000000;
+  padding: 20px 40px;
+  border: 1px solid #ffffff;
+  font-size: 20px;
+  border-radius: 5px;
+}/*# sourceMappingURL=message.component.css.map */

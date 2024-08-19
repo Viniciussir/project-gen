@@ -1,0 +1,16 @@
+.number-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5%;
+}
+.number-input-container input {
+  width: 18vw;
+  padding: 10px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+}
+.number-input-container input:focus {
+  border-color: #007bff;
+}/*# sourceMappingURL=input-number.component.css.map */
