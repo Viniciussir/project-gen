@@ -12,30 +12,29 @@
         </div>
 
         <div class="itens-info">
+            <app-input-text
+                class="itens"
+                [placeholder]="placeholderName" 
+                [(value)]="valueName">>
+            </app-input-text>
 
             <app-input-text
-            class="itens"
-            [placeholder]="placeholderName" 
-            [(value)]="valueName">>
-        </app-input-text>
+                class="itens"
+                [placeholder]="placeholderDescription" 
+                [(value)]="valueDescription">>
+            </app-input-text>
 
-        <app-input-text
-            class="itens"
-            [placeholder]="placeholderDescription" 
-            [(value)]="valueDescription">>
-        </app-input-text>
+            <app-input-number
+                class="itens"
+                [placeholder]="placeholderQuantity" 
+                [(value)]="valueQuantity">
+            </app-input-number>
 
-        <app-input-number
-            class="itens"
-            [placeholder]="placeholderQuantity" 
-            [(value)]="valueQuantity">
-        </app-input-number>
-
-        <app-input-number
-            class="itens"
-            [placeholder]="placeholderPrice" 
-            [(value)]="valuePrice">
-        </app-input-number>
+            <app-input-number
+                class="itens"
+                [placeholder]="placeholderPrice" 
+                [(value)]="valuePrice">
+            </app-input-number>
 
         </div>
 
@@ -52,8 +51,12 @@
         <app-button 
           [indDisabled]="false"
           [name]="'Salvar'"
-          (action)="return()">
+          (action)="save()">
         </app-button>
 
       </div>
 </app-container>
+
+<app-footer></app-footer>
+
+<app-message *ngIf="indShowMessage" [message]="message"></app-message>

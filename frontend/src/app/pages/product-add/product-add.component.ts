@@ -8,6 +8,9 @@ import { ButtonComponent } from '../../components/button/button.component';
 import { ApiService } from '../../service/api.service';
 import { Router } from '@angular/router';
 import { ImageUploadComponent } from '../../components/image-upload/image-upload.component';
+import { firstValueFrom } from 'rxjs';
+import { MessageComponent } from '../../components/message/message.component';
+import { FooterComponent } from '../../components/footer/footer.component';
 
 @Component({
   selector: 'app-product-add',
@@ -19,7 +22,9 @@ import { ImageUploadComponent } from '../../components/image-upload/image-upload
     InputNumberComponent,
     TitleComponent,
     ButtonComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    MessageComponent,
+    FooterComponent
 ],
   templateUrl: './product-add.component.html',
   styleUrl: './product-add.component.scss'
@@ -48,6 +53,9 @@ export class ProductAddComponent {
     { title: 'Dados Gerais', expanded: true }
   ]
 
+  indShowMessage:boolean = false;
+  message:string = '';
+
   constructor(
     private apiService:ApiService,
     private router: Router,
@@ -58,8 +66,27 @@ export class ProductAddComponent {
     console.log('Arquivo de imagem selecionado:', file);
   }
 
-  Salvar(event:any){
-    console.log(this.valueName)
+  async save(){
+    let product = {
+      "name": this.valueName,
+      "description": this.valueDescription,
+      "price": this.valuePrice,
+      "quantity": this.valueQuantity,
+      "img": ""
+    }
+    this.apiService.newProduct(product).subscribe({
+      error: (error) => {
+        console.error('Erro ao enviar dados:', error);
+      },
+      complete: () => {
+        this.message = "Salvo com Sucesso!";
+        this.indShowMessage = true;
+        setTimeout(() => {
+          this.indShowMessage = false;
+          this.return();
+        }, 2000);
+      }
+    });
   }
 
   return(){

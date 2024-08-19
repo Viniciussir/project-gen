@@ -5,6 +5,7 @@ import { ApiService } from '../../service/api.service';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-product-list',
@@ -12,8 +13,10 @@ import { Router } from '@angular/router';
   imports: [
     CommonModule,
     ContainerComponent,
-    ListComponent
-  ],
+    ListComponent,
+    FooterComponent,
+    FooterComponent
+],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss'
 })

@@ -20,13 +20,15 @@ export class InputTextComponent {
 
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 
+  pattern: string = '[a-zA-Z\\s]*';
+
   onValueChange(event: any) {
     this.valueChange.emit(this.value)
   }
 
   allowTextOnly(event: KeyboardEvent) {
     const key = event.key;
-    if (!/^[a-zA-Z]$/.test(key)) {
+    if (!/^[a-zA-Z\s]$/.test(key)) {
       event.preventDefault();
     }
   }

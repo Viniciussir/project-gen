@@ -1,7 +1,7 @@
 <div class="text-input-container">
     <input
       type="text"
-      pattern="[a-zA-Z]*"
+      [pattern]="pattern"
       (keypress)="allowTextOnly($event)"
       (input)="onValueChange($event)"
       [(ngModel)]="value"
