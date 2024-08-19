@@ -16,6 +16,7 @@ export class InputNumberComponent {
 
   @Input() value: string = '';
   @Input() placeholder: string = '';
+  @Input() indDisableFields: boolean = false;
 
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 

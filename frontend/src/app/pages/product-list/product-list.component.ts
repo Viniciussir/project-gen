@@ -58,11 +58,11 @@ export class ProductListComponent implements OnInit{
   }
 
   clickDetailProduct(value:any){
-    this.router.navigate(['/detalhar-produto', value.name]);
+    this.router.navigate(['/detalhar-produto', value.id]);
   }
 
   clickAlterProduct(value:any){
-    this.router.navigate(['/alterar-produto', value.name]);
+    this.router.navigate(['/alterar-produto', value.id]);
   }
   
 

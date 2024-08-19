@@ -15,25 +15,29 @@
             <app-input-text
                 class="itens"
                 [placeholder]="placeholderName" 
-                [(value)]="valueName">>
+                [(value)]="valueName"
+                [indDisableFields]="indDisableFields">
             </app-input-text>
 
             <app-input-text
                 class="itens"
                 [placeholder]="placeholderDescription" 
-                [(value)]="valueDescription">>
+                [(value)]="valueDescription"
+                [indDisableFields]="indDisableFields">
             </app-input-text>
 
             <app-input-number
                 class="itens"
                 [placeholder]="placeholderQuantity" 
-                [(value)]="valueQuantity">
+                [(value)]="valueQuantity"
+                [indDisableFields]="indDisableFields">
             </app-input-number>
 
             <app-input-number
                 class="itens"
                 [placeholder]="placeholderPrice" 
-                [(value)]="valuePrice">
+                [(value)]="valuePrice"
+                [indDisableFields]="indDisableFields">
             </app-input-number>
 
         </div>
@@ -49,9 +53,9 @@
         </app-button>
 
         <app-button 
-          [indDisabled]="false"
+          [indDisabled]="indDisableFields"
           [name]="'Salvar'"
-          (action)="save()">
+          (action)="checkSave()">
         </app-button>
 
       </div>

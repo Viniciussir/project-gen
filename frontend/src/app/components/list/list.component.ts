@@ -15,9 +15,10 @@ export class ListComponent {
   @Input() value: any = {};
   @Input() options: any[] = [];
 
-  @Output() clickCheckedAction = new EventEmitter<void>();
   @Output() clicknNewProductAction = new EventEmitter<void>();
   @Output() clickImgAction = new EventEmitter<void>();
+  @Output() clickAlterAction = new EventEmitter<void>();
+  @Output() clickDeleteAction = new EventEmitter<void>();
 
   constructor() { }
 
@@ -25,12 +26,12 @@ export class ListComponent {
     this.clickImgAction.emit(value);
   }
 
-  clickButton(value: any) {
-    console.log('Favorited state:', value.isFavorited);
+  clickButtonEdit(value: any) {
+    this.clickAlterAction.emit(value);
   }
 
   clickButtonDelete(value:any){
-    this.clickCheckedAction.emit(value);
+    this.clickDeleteAction.emit(value);
   }
 
   clickNewProduct() {

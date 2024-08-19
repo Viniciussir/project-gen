@@ -17,6 +17,14 @@ export class ProductController {
         return this.productRepository.listProduct();
     }
 
+    @Get(':id')
+    searchProductById(@Param('id') id:string){
+        const product = this.productRepository.searchById(id);
+        return { 
+            product: product
+        }
+    }   
+
     @Post()
     createNewProduct(@Body() productDTO: ProductDTO) {
         const productEntity = new ProductEntity();

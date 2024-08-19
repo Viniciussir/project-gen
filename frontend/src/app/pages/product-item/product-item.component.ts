@@ -32,7 +32,7 @@ import { Location } from '@angular/common';
 })
 export class ProductItemComponent implements OnInit {
 
-  titleProductAdd:string = 'Adicione as informações do seu produto'
+  titleProductAdd:string = 'Produtos'
 
   valueName:string = '';
   placeholderName:string = 'Digite o nome do produto';
@@ -50,12 +50,13 @@ export class ProductItemComponent implements OnInit {
   name:any = '';
   selectedImageFile: File | null = null;
 
-  accordionItems = [
-    { title: 'Dados Gerais', expanded: true }
-  ]
+  indDisableFields:boolean = false;
 
   indShowMessage:boolean = false;
   message:string = '';
+
+  operacao:String = '';
+  id:string = '';
 
   constructor(
     private apiService:ApiService,
@@ -66,17 +67,49 @@ export class ProductItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const currentUrl = this.location.path();
-    if (currentUrl.includes('detalhar')) {
-    } else if (currentUrl.includes('alterar')){
-      
-    } else {
-
-    }
     this.route.params.subscribe(params => {
-      const id = params['id'];
+      this.id = params['id'];
+      this.checkStatus(this.id);
     });
     
+  }
+
+  checkStatus(id:string){
+    const currentUrl = this.location.path();
+    if (currentUrl.includes('detalhar')) {
+      this.apiService.searchProductById(id).subscribe({
+        error: (error) => {
+          console.error(error);
+        },
+        next: (response) => {
+          this.operacao = 'detalhar';
+          this.titleProductAdd = 'Visualize as informações do seu produto';
+          this.indDisableFields = true;
+          this.valueName = response.product.name;
+          this.valueDescription = response.product.description;
+          this.valuePrice = response.product.price;
+          this.valueQuantity = response.product.quantity;
+        },
+      })
+    } else if (currentUrl.includes('alterar')){
+      this.apiService.searchProductById(id).subscribe({
+        error: (error) => {
+          console.error('Erro ao enviar dados:', error);
+        },
+        next: (response) => {
+          this.operacao = 'alterar';
+          this.titleProductAdd = 'Altere as informações do seu produto';
+          this.indDisableFields = false;
+          this.valueName = response.product.name;
+          this.valueDescription = response.product.description;
+          this.valuePrice = response.product.price;
+          this.valueQuantity = response.product.quantity;
+        },
+      })
+    } else {
+      this.operacao = 'incluir';
+      this.titleProductAdd = 'Adicione as informações do seu produto';
+    }
   }
 
   onImageSelected(file: File): void {
@@ -84,7 +117,17 @@ export class ProductItemComponent implements OnInit {
     console.log('Arquivo de imagem selecionado:', file);
   }
 
-  async save(){
+  checkSave(){
+    if(this.operacao === 'incluir'){
+      this.includeProduct();
+    } else if(this.operacao === 'alterar'){
+      this.EditProduct();
+    } else {
+      this.return()
+    }
+  }
+
+  async includeProduct(){
     let product = {
       "name": this.valueName,
       "description": this.valueDescription,
@@ -98,6 +141,29 @@ export class ProductItemComponent implements OnInit {
       },
       complete: () => {
         this.message = "Salvo com Sucesso!";
+        this.indShowMessage = true;
+        setTimeout(() => {
+          this.indShowMessage = false;
+          this.return();
+        }, 2000);
+      }
+    });
+  }
+
+  async EditProduct(){
+    let product = {
+      "name": this.valueName,
+      "description": this.valueDescription,
+      "price": this.valuePrice,
+      "quantity": this.valueQuantity,
+      "img": ""
+    }
+    this.apiService.editProduct(this.id, product).subscribe({
+      error: (error) => {
+        console.error('Erro ao enviar dados:', error);
+      },
+      complete: () => {
+        this.message = "Alterado com Sucesso!";
         this.indShowMessage = true;
         setTimeout(() => {
           this.indShowMessage = false;

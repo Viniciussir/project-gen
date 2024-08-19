@@ -13,7 +13,7 @@ export class ProductRepository {
     this.product.push(dataProduct);
   }
 
-  private searchById(id: string) {
+  searchById(id: string) {
     const productExists = this.product.find(
       productSave => productSave.id === id
     );
