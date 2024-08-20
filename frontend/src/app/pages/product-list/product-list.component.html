@@ -1,16 +1,16 @@
 <app-container>
 
     <app-list
-        [options]="options"
-        [value]="value"
-        (clickDeleteAction)="checkedDelete($event)"
-        (clicknNewProductAction)="clickNewProduct()"
-        (clickImgAction)="clickDetailProduct($event)"
-        (clickAlterAction)="clickAlterProduct($event)">
+      [options]="options"
+      (clickDeleteAction)="checkedDelete($event)"
+      (clicknNewProductAction)="clickNewProduct()"
+      (clickImgAction)="clickDetailProduct($event)"
+      (clickAlterAction)="clickAlterProduct($event)">
     </app-list>
-
-</app-container>
-
-<app-footer></app-footer>
-
-<app-message *ngIf="indShowMessage" [message]="message"></app-message>
+    
+  </app-container>
+  
+  <app-footer></app-footer>
+  
+  <app-message *ngIf="indShowMessage" [message]="message"></app-message>
+  

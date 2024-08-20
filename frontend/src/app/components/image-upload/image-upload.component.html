@@ -1,8 +1,7 @@
 <div class="image-upload">
-    <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*" />
-    <label for="fileInput" class="upload-button">Escolha a Imagem</label>
-    <div *ngIf="previewUrl" class="image-preview">
-      <img [src]="previewUrl" alt="Image Preview" />
-    </div>
+  <input id="fileInput" type="file" (change)="onFileSelected($event)" accept="image/*" />
+  <label for="fileInput" class="upload-button">Escolha a Imagem</label>
+  <div *ngIf="previewUrl" class="image-preview">
+    <img [src]="previewUrl" alt="Image Preview" />
+  </div>
 </div>
-  

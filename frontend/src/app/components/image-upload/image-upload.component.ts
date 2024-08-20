@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-image-upload',
@@ -11,25 +11,23 @@ import { Component, Output, EventEmitter } from '@angular/core';
   styleUrl: './image-upload.component.scss'
 })
 export class ImageUploadComponent {
+  @Output() imageSelected = new EventEmitter<File | null>();
+  @Input() previewUrl: string | ArrayBuffer | null = null;
 
-  @Output() imageSelected = new EventEmitter<File>();
-
-  previewUrl: string | ArrayBuffer | null = null;
-  selectedFile: File | null = null;
-
-  onFileSelected(event: Event): void {
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
+    const file = input.files ? input.files[0] : null;
 
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      this.imageSelected.emit(this.selectedFile);  // Emite o arquivo selecionado para o componente pai
-
+    if (file) {
+      this.imageSelected.emit(file);
       const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.previewUrl = e.target?.result as string | ArrayBuffer;
       };
-      reader.readAsDataURL(this.selectedFile);
+      reader.readAsDataURL(file);
+    } else {
+      this.imageSelected.emit(null);
+      this.previewUrl = null;
     }
   }
-
 }

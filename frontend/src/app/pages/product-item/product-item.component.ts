@@ -8,11 +8,9 @@ import { ButtonComponent } from '../../components/button/button.component';
 import { ApiService } from '../../service/api.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ImageUploadComponent } from '../../components/image-upload/image-upload.component';
-import { firstValueFrom } from 'rxjs';
 import { MessageComponent } from '../../components/message/message.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { Location } from '@angular/common';
-import { Product } from '../../service/product';
 
 @Component({
   selector: 'app-product-item',
@@ -27,62 +25,52 @@ import { Product } from '../../service/product';
     ImageUploadComponent,
     MessageComponent,
     FooterComponent
-],
+  ],
   templateUrl: './product-item.component.html',
   styleUrl: './product-item.component.scss'
 })
 export class ProductItemComponent implements OnInit {
-
-  titleProductAdd:string = 'Produtos'
-
+  titleProductAdd:string = 'Produtos';
   valueName:string = '';
   placeholderName:string = 'Digite o nome do produto';
-
   placeholderDescription:string = 'Digite a descrição do produto';
   valueDescription:string = '';
-
   placeholderQuantity:string = 'Digite a quantidade de produtos';
   valueQuantity:any = '';
-
   placeholderPrice:string = 'Digite o valor do produto';
   valuePrice:any = '';
-
   img:any = '';
   name:any = '';
   selectedImageFile: File | null = null;
-
   indDisableFields:boolean = false;
-
   indShowMessage:boolean = false;
   message:string = '';
-
   operacao:String = '';
   id:string = '';
+  previewUrl: string | ArrayBuffer | null = null;
 
   constructor(
     private apiService:ApiService,
     private router: Router,
     private route: ActivatedRoute,
     private location: Location
-  ){
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id = params['id'];
       this.checkStatus(this.id);
     });
-    
   }
 
-  checkStatus(id:string){
+  checkStatus(id: string) {
     const currentUrl = this.location.path();
     if (currentUrl.includes('detalhar')) {
       this.apiService.searchProductById(id).subscribe({
         error: (error) => {
           console.error(error);
         },
-        next: (response) => {
+        next: async (response) => {
           this.operacao = 'detalhar';
           this.titleProductAdd = 'Visualize as informações do seu produto';
           this.indDisableFields = true;
@@ -90,14 +78,20 @@ export class ProductItemComponent implements OnInit {
           this.valueDescription = response.description;
           this.valuePrice = response.price;
           this.valueQuantity = response.quantity;
+  
+          if (response.img) {
+            this.previewUrl = await this.createImageFromBuffer(response.img.data);
+          } else {
+            this.previewUrl = null;
+          }
         },
-      })
-    } else if (currentUrl.includes('alterar')){
+      });
+    } else if (currentUrl.includes('alterar')) {
       this.apiService.searchProductById(id).subscribe({
         error: (error) => {
           console.error('Erro ao enviar dados:', error);
         },
-        next: (response) => {
+        next: async (response) => {
           this.operacao = 'alterar';
           this.titleProductAdd = 'Altere as informações do seu produto';
           this.indDisableFields = false;
@@ -105,18 +99,34 @@ export class ProductItemComponent implements OnInit {
           this.valueDescription = response.description;
           this.valuePrice = response.price;
           this.valueQuantity = response.quantity;
+  
+          if (response.img) {
+            this.previewUrl = await this.createImageFromBuffer(response.img.data);
+          } else {
+            this.previewUrl = null;
+          }
         },
-      })
+      });
     } else {
       this.operacao = 'incluir';
       this.titleProductAdd = 'Adicione as informações do seu produto';
     }
   }
-
-  onImageSelected(file: File): void {
-    this.selectedImageFile = file;
-    console.log('Arquivo de imagem selecionado:', file);
-  }
+  
+  async createImageFromBuffer(buffer: number[]): Promise<string | null> {
+    try {
+      const blob = new Blob([new Uint8Array(buffer)], { type: 'image/jpeg' }); // Use o tipo correto da imagem, se não for JPEG ajuste conforme necessário
+      const reader = new FileReader();
+      return new Promise<string | null>((resolve, reject) => {
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Erro ao converter buffer para URL de imagem:', error);
+      return null;
+    }
+  } 
 
   checkSave(){
     if(this.operacao === 'incluir'){
@@ -124,20 +134,36 @@ export class ProductItemComponent implements OnInit {
     } else if(this.operacao === 'alterar'){
       this.EditProduct();
     } else {
-      this.return()
+      this.return();
+    }
+  }
+
+  onImageChange(file: File | null) {
+    if (file) {
+      this.selectedImageFile = file;
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.previewUrl = e.target?.result as string | ArrayBuffer;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.selectedImageFile = null;
+      this.previewUrl = null;
     }
   }
 
   async includeProduct() {
-    let product: Product = {
-      name: this.valueName,
-      description: this.valueDescription,
-      price: this.valuePrice,
-      quantity: this.valueQuantity, 
-      img: ''
-    };
+    const formData = new FormData();
+    formData.append('name', this.valueName);
+    formData.append('description', this.valueDescription);
+    formData.append('price', parseFloat(this.valuePrice).toString());
+    formData.append('quantity', parseInt(this.valueQuantity, 10).toString());
 
-    this.apiService.newProduct(product).subscribe({
+    if (this.selectedImageFile) {
+      formData.append('img', this.selectedImageFile, this.selectedImageFile.name); // Adiciona o arquivo real
+    }
+
+    this.apiService.newProduct(formData).subscribe({
       error: (error) => {
         console.error('Erro ao enviar dados:', error);
       },
@@ -146,23 +172,24 @@ export class ProductItemComponent implements OnInit {
         this.indShowMessage = true;
         setTimeout(() => {
           this.indShowMessage = false;
-          this.return();
+          this.return(); 
         }, 2000);
       }
     });
   }
-  
 
   async EditProduct() {
-    let product: Product = {
-      name: this.valueName,
-      description: this.valueDescription,
-      price: this.valuePrice, 
-      quantity: this.valueQuantity, 
-      img: ''
-    };
-  
-    this.apiService.editProduct(this.id, product).subscribe({
+    const formData = new FormData();
+    formData.append('name', this.valueName);
+    formData.append('description', this.valueDescription);
+    formData.append('price', parseFloat(this.valuePrice).toString());
+    formData.append('quantity', parseInt(this.valueQuantity, 10).toString());
+
+    if (this.selectedImageFile) {
+      formData.append('img', this.selectedImageFile, this.selectedImageFile.name);
+    }
+
+    this.apiService.editProduct(this.id, formData).subscribe({
       error: (error) => {
         console.error('Erro ao enviar dados:', error);
       },
@@ -177,9 +204,7 @@ export class ProductItemComponent implements OnInit {
     });
   }
   
-
   return(){
-    this.router.navigate(['/lista-produtos'])
+    this.router.navigate(['/lista-produtos']);
   }
-
 }

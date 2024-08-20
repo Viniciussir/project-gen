@@ -5,7 +5,7 @@ CREATE TABLE "Product" (
     "description" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "img" TEXT,
+    "img" BYTEA;
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );

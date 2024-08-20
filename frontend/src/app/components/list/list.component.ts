@@ -12,17 +12,16 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ListComponent {
 
-  @Input() value: any = {};
   @Input() options: any[] = [];
 
   @Output() clicknNewProductAction = new EventEmitter<void>();
-  @Output() clickImgAction = new EventEmitter<void>();
-  @Output() clickAlterAction = new EventEmitter<void>();
-  @Output() clickDeleteAction = new EventEmitter<void>();
+  @Output() clickImgAction = new EventEmitter<any>(); // Corrigido o tipo para 'any'
+  @Output() clickAlterAction = new EventEmitter<any>(); // Corrigido o tipo para 'any'
+  @Output() clickDeleteAction = new EventEmitter<any>(); // Corrigido o tipo para 'any'
 
   constructor() { }
 
-  clickImg(value:any): void {
+  clickImg(value: any): void {
     this.clickImgAction.emit(value);
   }
 
@@ -30,12 +29,11 @@ export class ListComponent {
     this.clickAlterAction.emit(value);
   }
 
-  clickButtonDelete(value:any){
+  clickButtonDelete(value: any){
     this.clickDeleteAction.emit(value);
   }
 
   clickNewProduct() {
     this.clicknNewProductAction.emit();
   }
-
 }

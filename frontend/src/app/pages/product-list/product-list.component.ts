@@ -24,55 +24,64 @@ import { MessageComponent } from '../../components/message/message.component';
 })
 export class ProductListComponent implements OnInit{
 
-  options:any[] = [];
-  value:any = {};
-
-  indShowMessage:boolean = false;
-  message:string = '';
+  options: any[] = [];
+  message: string = '';
+  indShowMessage: boolean = false;
 
   constructor(
-    private apiService:ApiService,
-    private router: Router,
-  ){}
+    private apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadListProduct();
   }
 
-  async loadListProduct(){
-    try{
-    this.options = [];
-    const observable = this.apiService.getListProduct();
-    const data = await firstValueFrom(observable);
-      for (const value of data) {
-        value.img = 'img/laranja.jpeg';
-        this.options.push(value);
-      }
-    }
-    catch(error){
+  async loadListProduct() {
+    try {
+      const data = await firstValueFrom(this.apiService.getListProduct());
+  
+      this.options = data.map(item => ({
+        ...item,
+        img: item.img ? this.convertBufferToBase64(item.img) : null // Verifique se item.img não é null
+      }));
+    } catch (error) {
       console.error('Erro', error);
     }
+  }  
+
+  convertBufferToBase64(img: { type: string; data: number[] } | null): string | null {
+    if (img && img.type && img.data) {
+      const byteArray = new Uint8Array(img.data);
+      const base64String = btoa(
+        Array.from(byteArray).map(byte => String.fromCharCode(byte)).join('')
+      );
+      return `data:${img.type};base64,${base64String}`;
+    } else {
+      console.warn('Imagem inválida:', img);
+      return null; // Retorne null se a imagem for inválida
+    }
+  }
+   
+  clickNewProduct() {
+    this.router.navigate(['/novo-produto']);
   }
 
-  clickNewProduct(){
-    this.router.navigate(['/novo-produto'])
-  }
-
-  clickDetailProduct(value:any){
+  clickDetailProduct(value: any) {
     this.router.navigate(['/detalhar-produto', value.id]);
   }
 
-  clickAlterProduct(value:any){
+  clickAlterProduct(value: any) {
     this.router.navigate(['/alterar-produto', value.id]);
   }
 
-  checkedDelete(value:any){
+  checkedDelete(value: any) {
     this.apiService.deleteProduct(value.id).subscribe({
       error: (error) => {
         console.error('Erro ao enviar dados:', error);
       },
       complete: () => {
-        this.message = "Excluido com Sucesso!";
+        this.message = "Excluído com Sucesso!";
         this.indShowMessage = true;
         this.loadListProduct();
         setTimeout(() => {
@@ -81,6 +90,4 @@ export class ProductListComponent implements OnInit{
       }
     });
   }
-  
-
 }

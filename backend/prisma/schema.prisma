@@ -8,10 +8,10 @@ datasource db {
 }
 
 model Product {
-  id          Int     @id @default(autoincrement())
-  name        String
+  id        Int      @id @default(autoincrement())
+  name      String
   description String
-  price       Float
-  quantity    Int
-  img         String?
+  price     Float
+  quantity  Int
+  img       Bytes?   // Campo para armazenar a imagem em binário
 }

@@ -1,11 +1,30 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Delete, 
+  Get, 
+  Param, 
+  Post, 
+  Put, 
+  BadRequestException, 
+  InternalServerErrorException, 
+  UploadedFile, 
+  UseInterceptors, 
+  Res, 
+  HttpCode, 
+  HttpStatus 
+} from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Product, Prisma } from '@prisma/client';
+import { Product } from '@prisma/client';
 import { ProductDTO } from './dto/product.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 
 @Controller('product')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService
+  ) {}
 
   @Get()
   async getAllProducts(): Promise<Product[]> {
@@ -35,29 +54,58 @@ export class ProductController {
     }
   }
 
-  @Post()
-  async createProduct(@Body() productDTO: ProductDTO): Promise<Product> {
-    try {
-      const productData: Prisma.ProductCreateInput = {
-        name: productDTO.name,
-        description: productDTO.description,
-        price: parseFloat(productDTO.price as unknown as string),
-        quantity: parseInt(productDTO.quantity as unknown as string, 10),
-        img: '',
-      };
-      return await this.productService.createProduct(productData);
-    } catch (error) {
-      console.error('Error in controller:', error);
-      throw new InternalServerErrorException('Error creating product');
+  @Get(':id/image')
+  async getProductImage(@Param('id') id: string, @Res() res: Response) {
+    const idNumber = parseInt(id, 10);
+    const product = await this.productService.getProductById(idNumber);
+
+    if (product && product.img) {
+      res.setHeader('Content-Type', 'image/jpeg');
+      res.send(product.img);
+    } else {
+      res.status(404).send('Image not found');
     }
   }
 
+  @Post()
+  @UseInterceptors(FileInterceptor('img'))
+  async createProduct(
+    @Body() productDTO: ProductDTO,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Product> {
+    const productData = {
+      name: productDTO.name,
+      description: productDTO.description,
+      price: productDTO.price,
+      quantity: productDTO.quantity,
+    };
+    const imgBuffer = file ? file.buffer : null;
+    return this.productService.createProduct(productData, imgBuffer);
+  }
+
   @Put(':id')
-  async updateProduct(@Param('id') id: string, @Body() productData: Partial<Product>): Promise<Product> {
+  @UseInterceptors(FileInterceptor('img'))
+  async updateProduct(
+    @Param('id') id: string,
+    @Body() productDTO: ProductDTO,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Product> {
     const idNumber = parseInt(id, 10);
     if (isNaN(idNumber) || idNumber <= 0) {
       throw new BadRequestException('Invalid ID');
     }
+
+    const productData: Partial<Product> = {
+      name: productDTO.name,
+      description: productDTO.description,
+      price: productDTO.price,
+      quantity: productDTO.quantity,
+    };
+  
+    if (file) {
+      productData.img = file.buffer;
+    }
+  
     try {
       return await this.productService.updateProduct(idNumber, productData);
     } catch (error) {
@@ -65,7 +113,7 @@ export class ProductController {
       throw new InternalServerErrorException('Error updating product');
     }
   }
-
+  
   @Delete(':id')
   async deleteProduct(@Param('id') id: string): Promise<Product> {
     const idNumber = parseInt(id, 10);
@@ -79,4 +127,5 @@ export class ProductController {
       throw new InternalServerErrorException('Error deleting product');
     }
   }
+  
 }

@@ -8,9 +8,11 @@
 
         <div class="itens-img">
             <app-image-upload
-            (imageSelected)="onImageSelected($event)"></app-image-upload>
+              [previewUrl]="previewUrl"
+              (imageSelected)="onImageChange($event)">
+            </app-image-upload>
         </div>
-
+    
         <div class="itens-info">
             <app-input-text
                 class="itens"
