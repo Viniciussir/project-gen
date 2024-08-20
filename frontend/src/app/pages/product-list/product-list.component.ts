@@ -27,6 +27,7 @@ export class ProductListComponent implements OnInit{
   options: any[] = [];
   message: string = '';
   indShowMessage: boolean = false;
+  colorMessage:any = '';
 
   constructor(
     private apiService: ApiService,
@@ -82,6 +83,7 @@ export class ProductListComponent implements OnInit{
       },
       complete: () => {
         this.message = "Excluído com Sucesso!";
+        this.colorMessage = 'green'
         this.indShowMessage = true;
         this.loadListProduct();
         setTimeout(() => {

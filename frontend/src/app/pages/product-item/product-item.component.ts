@@ -57,6 +57,7 @@ export class ProductItemComponent implements OnInit {
 
   indShowMessage:boolean = false;
   message:string = '';
+  colorMessage:any = '';
 
   operacao:String = '';
 
@@ -168,6 +169,7 @@ export class ProductItemComponent implements OnInit {
   async includeProduct(): Promise<false | undefined> {
     if (!this.ValidationFields()) {
       this.message = "Verifique os campos informados!";
+      this.colorMessage = 'red';
       this.indShowMessage = true;
       setTimeout(() => {
         this.indShowMessage = false;
@@ -185,6 +187,7 @@ export class ProductItemComponent implements OnInit {
     } else {
       this.message = "Informe uma imagem para o seu produto";
       this.indShowMessage = true;
+      this.colorMessage = 'red';
       setTimeout(() => {
         this.indShowMessage = false;
       }, 2000);
@@ -195,6 +198,7 @@ export class ProductItemComponent implements OnInit {
       await this.apiService.newProduct(formData).toPromise(); 
       this.message = "Salvo com Sucesso!";
       this.indShowMessage = true;
+      this.colorMessage = 'green';
       setTimeout(() => {
         this.indShowMessage = false;
         this.return(); 
@@ -210,6 +214,7 @@ export class ProductItemComponent implements OnInit {
     if (!this.ValidationFields()) {
       this.message = "Verifique os campos informados!";
       this.indShowMessage = true;
+      this.colorMessage = 'red';
       setTimeout(() => {
         this.indShowMessage = false;
       }, 2000);
@@ -230,6 +235,7 @@ export class ProductItemComponent implements OnInit {
       await this.apiService.editProduct(this.id, formData).toPromise();
       this.message = "Alterado com Sucesso!";
       this.indShowMessage = true;
+      this.colorMessage = 'green';
       setTimeout(() => {
         this.indShowMessage = false;
         this.return();

@@ -12,5 +12,9 @@
   
   <app-footer></app-footer>
   
-  <app-message *ngIf="indShowMessage" [message]="message"></app-message>
+  <app-message 
+    *ngIf="indShowMessage" 
+    [message]="message"
+    [color]="colorMessage">
+  </app-message>
   
