@@ -30,24 +30,37 @@ import { Location } from '@angular/common';
   styleUrl: './product-item.component.scss'
 })
 export class ProductItemComponent implements OnInit {
+
   titleProductAdd:string = 'Produtos';
-  valueName:string = '';
+
   placeholderName:string = 'Digite o nome do produto';
+  valueName:string = '';
+  limitName:string = '10'
+
   placeholderDescription:string = 'Digite a descrição do produto';
   valueDescription:string = '';
+  limitDescription:string = '20'
+
   placeholderQuantity:string = 'Digite a quantidade de produtos';
   valueQuantity:any = '';
+
   placeholderPrice:string = 'Digite o valor do produto';
   valuePrice:any = '';
+  limitPrice:string = '10'
+
   img:any = '';
   name:any = '';
   selectedImageFile: File | null = null;
+  previewUrl: string | ArrayBuffer | null = null;
+
   indDisableFields:boolean = false;
+
   indShowMessage:boolean = false;
   message:string = '';
+
   operacao:String = '';
+
   id:string = '';
-  previewUrl: string | ArrayBuffer | null = null;
 
   constructor(
     private apiService:ApiService,

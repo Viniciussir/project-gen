@@ -1,12 +1,12 @@
 <div class="number-input-container">
-    <input
-      type="text"
-      pattern="[0-9,]*"
-      (keypress)="allowNumberOnly($event)"
-      (input)="onValueChange($event)"
-      [(ngModel)]="value"
-      [placeholder]="placeholder"
-      [disabled]="indDisableFields"
-    />
+  <input
+    type="text"
+    pattern="[0-9,]*"
+    (keypress)="allowNumberOnly($event)"
+    (input)="onValueChange($event)"
+    [(ngModel)]="value"
+    [placeholder]="placeholder"
+    [disabled]="indDisableFields"
+    [maxlength]="maxlength"
+  />
 </div>
-  

@@ -18,6 +18,7 @@ export class InputTextComponent {
   @Input() value: string = '';
   @Input() placeholder: string = '';
   @Input() indDisableFields: boolean = false;
+  @Input() maxlength: string = '20';
 
   @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
 

@@ -18,14 +18,16 @@
                 class="itens"
                 [placeholder]="placeholderName" 
                 [(value)]="valueName"
-                [indDisableFields]="indDisableFields">
+                [indDisableFields]="indDisableFields"
+                [maxlength]="limitName">
             </app-input-text>
 
             <app-input-text
                 class="itens"
                 [placeholder]="placeholderDescription" 
                 [(value)]="valueDescription"
-                [indDisableFields]="indDisableFields">
+                [indDisableFields]="indDisableFields"
+                [maxlength]="limitDescription">
             </app-input-text>
 
             <app-input-number
@@ -39,7 +41,8 @@
                 class="itens"
                 [placeholder]="placeholderPrice" 
                 [(value)]="valuePrice"
-                [indDisableFields]="indDisableFields">
+                [indDisableFields]="indDisableFields"
+                [maxlength]="limitPrice">
             </app-input-number>
 
         </div>
