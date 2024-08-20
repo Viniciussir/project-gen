@@ -20,9 +20,13 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.button-container{
+.button-container {
+    position: fixed;
+    bottom: 8vw;
+    left: 10vw;
+    right: 10vw;
     display: flex;
-    justify-content: space-between;
-    margin: 0 10%;
+    justify-content: space-between; 
     padding: 10px;
-}
+  }
+  
