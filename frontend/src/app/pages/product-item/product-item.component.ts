@@ -12,6 +12,7 @@ import { firstValueFrom } from 'rxjs';
 import { MessageComponent } from '../../components/message/message.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { Location } from '@angular/common';
+import { Product } from '../../service/product';
 
 @Component({
   selector: 'app-product-item',
@@ -41,10 +42,10 @@ export class ProductItemComponent implements OnInit {
   valueDescription:string = '';
 
   placeholderQuantity:string = 'Digite a quantidade de produtos';
-  valueQuantity:string = '';
+  valueQuantity:any = '';
 
   placeholderPrice:string = 'Digite o valor do produto';
-  valuePrice:string = '';
+  valuePrice:any = '';
 
   img:any = '';
   name:any = '';
@@ -85,10 +86,10 @@ export class ProductItemComponent implements OnInit {
           this.operacao = 'detalhar';
           this.titleProductAdd = 'Visualize as informações do seu produto';
           this.indDisableFields = true;
-          this.valueName = response.product.name;
-          this.valueDescription = response.product.description;
-          this.valuePrice = response.product.price;
-          this.valueQuantity = response.product.quantity;
+          this.valueName = response.name;
+          this.valueDescription = response.description;
+          this.valuePrice = response.price;
+          this.valueQuantity = response.quantity;
         },
       })
     } else if (currentUrl.includes('alterar')){
@@ -100,10 +101,10 @@ export class ProductItemComponent implements OnInit {
           this.operacao = 'alterar';
           this.titleProductAdd = 'Altere as informações do seu produto';
           this.indDisableFields = false;
-          this.valueName = response.product.name;
-          this.valueDescription = response.product.description;
-          this.valuePrice = response.product.price;
-          this.valueQuantity = response.product.quantity;
+          this.valueName = response.name;
+          this.valueDescription = response.description;
+          this.valuePrice = response.price;
+          this.valueQuantity = response.quantity;
         },
       })
     } else {
@@ -127,14 +128,15 @@ export class ProductItemComponent implements OnInit {
     }
   }
 
-  async includeProduct(){
-    let product = {
-      "name": this.valueName,
-      "description": this.valueDescription,
-      "price": this.valuePrice,
-      "quantity": this.valueQuantity,
-      "img": ""
-    }
+  async includeProduct() {
+    let product: Product = {
+      name: this.valueName,
+      description: this.valueDescription,
+      price: this.valuePrice,
+      quantity: this.valueQuantity, 
+      img: ''
+    };
+
     this.apiService.newProduct(product).subscribe({
       error: (error) => {
         console.error('Erro ao enviar dados:', error);
@@ -149,15 +151,17 @@ export class ProductItemComponent implements OnInit {
       }
     });
   }
+  
 
-  async EditProduct(){
-    let product = {
-      "name": this.valueName,
-      "description": this.valueDescription,
-      "price": this.valuePrice,
-      "quantity": this.valueQuantity,
-      "img": ""
-    }
+  async EditProduct() {
+    let product: Product = {
+      name: this.valueName,
+      description: this.valueDescription,
+      price: this.valuePrice, 
+      quantity: this.valueQuantity, 
+      img: ''
+    };
+  
     this.apiService.editProduct(this.id, product).subscribe({
       error: (error) => {
         console.error('Erro ao enviar dados:', error);
@@ -172,6 +176,7 @@ export class ProductItemComponent implements OnInit {
       }
     });
   }
+  
 
   return(){
     this.router.navigate(['/lista-produtos'])

@@ -1,62 +1,82 @@
+import { Body, Controller, Delete, Get, Param, Post, Put, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { ProductService } from './product.service';
+import { Product, Prisma } from '@prisma/client';
 import { ProductDTO } from './dto/product.dto';
-import { UpdateProductDTO } from './dto/update-product';
-import { ProductEntity } from './product.entity';
-import { ProductRepository } from './product.repository';
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { v4 as uuid } from 'uuid';
 
 @Controller('product')
 export class ProductController {
+  constructor(private readonly productService: ProductService) {}
 
-    constructor(
-        private productRepository: ProductRepository
-    ) {}
-
-    @Get()
-    LoadlistProduct() {
-        return this.productRepository.listProduct();
+  @Get()
+  async getAllProducts(): Promise<Product[]> {
+    try {
+      return await this.productService.getAllProducts();
+    } catch (error) {
+      console.error('Error in controller:', error);
+      throw new InternalServerErrorException('Error retrieving products');
     }
+  }
 
-    @Get(':id')
-    searchProductById(@Param('id') id:string){
-        const product = this.productRepository.searchById(id);
-        return { 
-            product: product
-        }
-    }   
-
-    @Post()
-    createNewProduct(@Body() productDTO: ProductDTO) {
-        const productEntity = new ProductEntity();
-        productEntity.name = productDTO.name;
-        productEntity.description = productDTO.description;
-        productEntity.quantity = productDTO.quantity;
-        productEntity.price = productDTO.price;
-        productEntity.img = productDTO.img;
-        productEntity.id = uuid();
-        this.productRepository.saveProduct(productEntity)
-        return { 
-            mensagem: 'Usuario criado com sucesso!' 
-        }
+  @Get(':id')
+  async getProductById(@Param('id') id: string): Promise<Product> {
+    const idNumber = parseInt(id, 10);
+    if (isNaN(idNumber) || idNumber <= 0) {
+      throw new BadRequestException('Invalid ID');
     }
-
-    @Put('/:id')
-    async upadateProduct(@Param('id') id:string, @Body() newData: UpdateProductDTO){
-        const usuarioAtualizado = await this.productRepository.updateProd(id, newData);
-
-        return {
-            mensagem: 'Usuario atualizado com sucesso!' 
-        }
+    try {
+      const product = await this.productService.getProductById(idNumber);
+      if (!product) {
+        throw new BadRequestException('Product not found');
+      }
+      return product;
+    } catch (error) {
+      console.error('Error in controller:', error);
+      throw new InternalServerErrorException('Error retrieving product');
     }
+  }
 
-    @Delete('/:id')
-    async removeUsuario(@Param('id') id: string) {
-        const usuarioRemovido = await this.productRepository.remove(id);
-    
-        return {
-            mensagem: 'Usuário removido com sucesso'
-        }
+  @Post()
+  async createProduct(@Body() productDTO: ProductDTO): Promise<Product> {
+    try {
+      const productData: Prisma.ProductCreateInput = {
+        name: productDTO.name,
+        description: productDTO.description,
+        price: parseFloat(productDTO.price as unknown as string),
+        quantity: parseInt(productDTO.quantity as unknown as string, 10),
+        img: '',
+      };
+      return await this.productService.createProduct(productData);
+    } catch (error) {
+      console.error('Error in controller:', error);
+      throw new InternalServerErrorException('Error creating product');
     }
+  }
 
+  @Put(':id')
+  async updateProduct(@Param('id') id: string, @Body() productData: Partial<Product>): Promise<Product> {
+    const idNumber = parseInt(id, 10);
+    if (isNaN(idNumber) || idNumber <= 0) {
+      throw new BadRequestException('Invalid ID');
+    }
+    try {
+      return await this.productService.updateProduct(idNumber, productData);
+    } catch (error) {
+      console.error('Error in controller:', error);
+      throw new InternalServerErrorException('Error updating product');
+    }
+  }
 
+  @Delete(':id')
+  async deleteProduct(@Param('id') id: string): Promise<Product> {
+    const idNumber = parseInt(id, 10);
+    if (isNaN(idNumber) || idNumber <= 0) {
+      throw new BadRequestException('Invalid ID');
+    }
+    try {
+      return await this.productService.deleteProduct(idNumber);
+    } catch (error) {
+      console.error('Error in controller:', error);
+      throw new InternalServerErrorException('Error deleting product');
+    }
+  }
 }

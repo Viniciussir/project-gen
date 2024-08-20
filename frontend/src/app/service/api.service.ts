@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Product } from './product';
 
 @Injectable({
   providedIn: 'root'
@@ -13,25 +14,23 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
-  getListProduct(): Observable<any> {
-    return this.http.get<any>(this.url);
+  getListProduct(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.url);
   }
 
-  searchProductById(id:string):Observable<any> {
-    return this.http.get<any>(this.url+ '/' + id);
+  searchProductById(id: string): Observable<Product> {
+    return this.http.get<Product>(`${this.url}/${id}`);
   }
 
-  newProduct(value: any): Observable<any> {
-    return this.http.post(this.url, value);
+  newProduct(value: Product): Observable<Product> {
+    return this.http.post<Product>(this.url, value);
   }
 
-  editProduct(id:string, value:any): Observable<any> {
-    return this.http.put(this.url+ '/' + id, value);
+  editProduct(id: string, value: Product): Observable<Product> {
+    return this.http.put<Product>(`${this.url}/${id}`, value);
   }
 
-  deleteProduct(id:string): Observable<any> {
-    return this.http.delete(this.url+ '/' + id);
+  deleteProduct(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
-
-
 }
