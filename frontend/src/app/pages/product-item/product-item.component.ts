@@ -165,33 +165,57 @@ export class ProductItemComponent implements OnInit {
     }
   }
 
-  async includeProduct() {
+  async includeProduct(): Promise<false | undefined> {
+    if (!this.ValidationFields()) {
+      this.message = "Verifique os campos informados!";
+      this.indShowMessage = true;
+      setTimeout(() => {
+        this.indShowMessage = false;
+      }, 2000);
+      return false;
+    }
     const formData = new FormData();
     formData.append('name', this.valueName);
     formData.append('description', this.valueDescription);
     formData.append('price', parseFloat(this.valuePrice).toString());
     formData.append('quantity', parseInt(this.valueQuantity, 10).toString());
-
+  
     if (this.selectedImageFile) {
-      formData.append('img', this.selectedImageFile, this.selectedImageFile.name); // Adiciona o arquivo real
+      formData.append('img', this.selectedImageFile, this.selectedImageFile.name);
+    } else {
+      this.message = "Informe uma imagem para o seu produto";
+      this.indShowMessage = true;
+      setTimeout(() => {
+        this.indShowMessage = false;
+      }, 2000);
+      return false;
     }
-
-    this.apiService.newProduct(formData).subscribe({
-      error: (error) => {
-        console.error('Erro ao enviar dados:', error);
-      },
-      complete: () => {
-        this.message = "Salvo com Sucesso!";
-        this.indShowMessage = true;
-        setTimeout(() => {
-          this.indShowMessage = false;
-          this.return(); 
-        }, 2000);
-      }
-    });
+  
+    try {
+      await this.apiService.newProduct(formData).toPromise(); 
+      this.message = "Salvo com Sucesso!";
+      this.indShowMessage = true;
+      setTimeout(() => {
+        this.indShowMessage = false;
+        this.return(); 
+      }, 2000);
+      return ;
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+      return false;
+    }
   }
-
-  async EditProduct() {
+  
+  async EditProduct(): Promise<false | undefined> {
+    if (!this.ValidationFields()) {
+      this.message = "Verifique os campos informados!";
+      this.indShowMessage = true;
+      setTimeout(() => {
+        this.indShowMessage = false;
+      }, 2000);
+      return false;
+    }
+  
     const formData = new FormData();
     formData.append('name', this.valueName);
     formData.append('description', this.valueDescription);
@@ -201,20 +225,27 @@ export class ProductItemComponent implements OnInit {
     if (this.selectedImageFile) {
       formData.append('img', this.selectedImageFile, this.selectedImageFile.name);
     }
+  
+    try {
+      await this.apiService.editProduct(this.id, formData).toPromise();
+      this.message = "Alterado com Sucesso!";
+      this.indShowMessage = true;
+      setTimeout(() => {
+        this.indShowMessage = false;
+        this.return();
+      }, 2000);
+      return 
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+      return false;
+    }
+  }  
 
-    this.apiService.editProduct(this.id, formData).subscribe({
-      error: (error) => {
-        console.error('Erro ao enviar dados:', error);
-      },
-      complete: () => {
-        this.message = "Alterado com Sucesso!";
-        this.indShowMessage = true;
-        setTimeout(() => {
-          this.indShowMessage = false;
-          this.return();
-        }, 2000);
-      }
-    });
+  ValidationFields(){
+    if(this.valueName && this.valueDescription && this.valuePrice && this.valueQuantity){
+      return true
+    }
+    return false
   }
   
   return(){
